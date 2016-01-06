@@ -1,17 +1,24 @@
-# A Few Things You Should Know About JavaScript
+# JavaScript At Scale - Achieving High Velocity
 
-There is a reason JavaScript has the highest number of packages of any language, and the highest number of repositories of any language on GitHub. It’s extremely easy to get started with and there are no shortage of frameworks and tools.
-
-What you don’t generally see on GitHub or hear about in articles, is that once you start to scale out, JavaScript has the ability to quickly become unwieldy and prone to unnecessary complexity, making it very hard to maintain the same velocity and ease of programming that probably made you chose JavaScript in the first place.
+Our goal as developers and the creators of products is to ensure we deliver a quality solution that is able to adapt, quickly and reliably, to changes as the product evolves. To me that is the only true measure of velocity and it seems I am not the only one who feels this way.
 
 > “Velocity is the measure of your ability to adapt.” — Eric Elliott
 
-How do you keep consistency across code bases, get the most reusability from your work, and ensure that the tools and patterns you have chosen are giving you the ability to make changes quickly?
+Many companies choose JavaScript because it is touted as flexible and fast. While this may be true, that same flexibility and ability to move quickly can get you in a few traps if you are not careful, and put some thought in to how you build out your JavaScript ecosystem.
+
+A few issues that come to mind are:
+
+- Consistency across code bases
+- Getting the most reusability from your work
+- Avoiding complexity
+- Ability to scale at well
+- Ability to confidently and quickly make changes to the codebase
+- Ensuring that the tools and patterns you have chosen are helping productivity
 
 Having worked in a number of JavaScript heavy environments I have had the opportunity to deal with just about every issue of scaling JavaScript applications, both on the client and on the server. What follows are all the things I wish someone told me when I started working with JavaScript [at scale]( http://addyosmani.com/largescalejavascript/).
 
 
-## Some Guiding Principals
+## Some Guiding Principles
 
 Before we talk about JavaScript in any particular context, there are some things that can make your life much easier no matter what platform you happen to be building software for.
 
@@ -25,7 +32,7 @@ JavaScript is a powerful language. It provides object composition with prototypa
 
 ### Be Extremely Lazy
 
-Currently there are over 200,000 modules on NPM. Time is money, and the more time you spend maintaining code that didn’t need to be written, is the more money you cost your employers.
+Currently there are over **200,000 modules** on NPM. Time is money, and the more time you spend maintaining code that didn’t need to be written, is the more money you cost your employers.
 
 I’m referring to services and tools as well. Don’t build your own analytics platform until you have scaled beyond what SaaS solutions like **Google Analytics**, **Mixpanel**, or **Keen.io** can provide. Using services to handle non product specific functionality allows you to focus on the one thing that matters, the product.
 
@@ -64,7 +71,7 @@ Tools like **Electron** and **React Native** provide access to native environmen
 
 ### Keep Things As Small As Possible
 
-Breaking up your applications in to numerous smaller modules is the true key to composable JavaScript. Following the **FIRST** philosophy helps keep down complexity while promoting testability and reuse.
+Breaking up your applications in to numerous smaller modules is the true key to composable JavaScript. Following the **FIRST** philosophy (Focused, Independent, Reusable, Small, Testable) helps keep down complexity while promoting testability and reuse.
 
 > “Whether it’s a client or server-side component, a Node module or a piece of visual UI, components that are large are inherently more complex to maintain than those that are small.” — Addy Osmani
 
@@ -130,13 +137,6 @@ When you plug hapi-swagger into  your server, you can simply tag any route as pa
 
 As with most other server side languages, there are no shortage of JavaScript frameworks that cover client-side applications. However, as with back-end applications and services, I prefer to use smaller modules and compose them together in to a framework that supports scalability, maintainability, and reuse.
 
-### Dealing with the Network
-
-For network requests I tend to wrap the **superagent** module in a bit of custom code to make things like retries, de-duping, and throttling a bit easier to implement. Plus I enjoy **Promises** so I need a different API than what superagent supports out of the box. This is usable both in the client, and on the server.
-
-- [https://visionmedia.github.io/superagent/](https://visionmedia.github.io/superagent/)
-- [https://github.com/petkaantonov/bluebird](https://github.com/petkaantonov/bluebird)
-
 ### Building the Client UI
 
 For UI applications, I find **React** for the UI, **Redux** for state management, and **Joi** for data validation to be the most effective base for building scalable client applications that are easy to work through, as well as easy to test and debug (more on the amazing tooling for these libraries in a minute).
@@ -179,10 +179,36 @@ It’s going to come as no surprise that I recommend using React Native when it 
 
 I really like to focus around input and output. I only ever test the public APIs of my modules, never the internals. I find this much easier to work with, and a bit more efficient.
 
-By not concerning ourselves with any internals we are free to change them at will as long as we don’t break the public API of that module. This means tests need to change less frequently and you can be sure that you are receiving exactly what you would receive in your application.
+### Keep the Feedback Loop Small
 
-As far as actually testing modules, lately I have been a big fan of **tape** and **nock**. With just those two modules I am able to cover about 99% of my tests (sometimes I may want to spy on something and will use Sinon). Not to mention that Hapi has the inject method on the server that allows you to do end-to-end testing without running the application. (This can be accomplished with Express and the supertest module.) This setup allows me to keep my tests as pure as possible.
+Having a full suite of tests for your application is a necessity, however with great coverage comes lengthy test executions. Shave off a few seconds by only running your unit tests locally, have integration and end-to-end tests run during the build process. This will provide the same confidence in code quality before releases while allowing you to move quickly while developing.
+
+### Only Test Public APIs
+
+By not concerning ourselves with any internals we are free to change them at will as long as we don’t break the public API of that module. This means tests need to change less frequently and you can be sure that you are receiving exactly what you would receive in your application.
+- [https://en.wikipedia.org/wiki/Black-box_testing](https://en.wikipedia.org/wiki/Black-box_testing)
+
+### Building a Testing Framework
+
+As far as actually testing modules, lately I have been a big fan of **tape** and **nock**. With just those two modules I am able to cover about 99% of my tests (sometimes I may want to spy on something and will use Sinon). Not to mention that Hapi has the inject method on the server that allows you to do end-to-end testing without running the application. (This can be accomplished with Express and the supertest module.)
+
+For end-to-end testing I use Nightmare. I try to keep my number of end-to-end tests as low as possible and only run them, and integration tests, during builds. Only running unit tests locally will provide you with faster feedback.
 
 - [https://medium.com/javascript-scene/why-i-use-tape-instead-of-mocha-so-should-you-6aa105d8eaf4#.x144okjng](https://medium.com/javascript-scene/why-i-use-tape-instead-of-mocha-so-should-you-6aa105d8eaf4#.x144okjng)
-- [https://en.wikipedia.org/wiki/Black-box_testing](https://en.wikipedia.org/wiki/Black-box_testing)
+
 - [https://ericelliottjs.com/product/tdd-es6-react/](https://ericelliottjs.com/product/tdd-es6-react/)
+
+- [http://www.nightmarejs.org/](http://www.nightmarejs.org/)
+
+
+## Final Thoughts
+
+JavaScript offers some unique benefits and makes a great candidate for building applications on any platform. Due to the amount of places it can run, and it’s ability to be written in ways that make code extremely reusable and composable, JavaScript is probably the most important language you can know right now.
+
+However, those same benefits in the hands of those unfamiliar with the differences and “gotchyas” of JavaScript, may quickly find that making changes to the codebase is not as easy as it once was and changes seem to have adverse and unexpected results.
+
+Don’t get caught caught up in writing applications like you do for other languages. Make the most of what JavaScript has to offer and work towards small and simple modules. This will help keep you sane and your love for JavaScript strong!
+
+I would love to know how others achieve velocity and keep JavaScript heavy environments running smoothly, please share your processes and modules of choice in the comments below!
+
+Happy JavaScripting!
