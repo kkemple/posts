@@ -209,6 +209,6 @@ However, those same benefits in the hands of those unfamiliar with the differenc
 
 Don’t get caught caught up in writing applications like you do for other languages. Make the most of what JavaScript has to offer and work towards small and simple modules. This will help keep you sane and your love for JavaScript strong!
 
-I would love to know how others achieve velocity and keep JavaScript heavy environments running smoothly, please share your processes and modules of choice in the comments below!
+I would love to know how others achieve velocity and keep JavaScript heavy environments running smoothly. Please share your processes and modules of choice in the comments below!
 
 Happy JavaScripting!
